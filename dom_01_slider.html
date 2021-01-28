@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Slider</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Monserat', sans-serif;
+    }
+    button {
+      border: 0;
+      background: none;
+      outline: none;
+
+    }
+    .slider__viewbox {
+      width: 300px;
+      height: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+    .slider__item {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #444;
+      background-color: #ffefd5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+    }
+    .slider__items-wrap {
+      margin-left: 0;
+      display: flex;
+      flex-wrap: nowrap;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: margin .2s;
+    }
+    .slider__control {
+      color: dodgerblue;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 30px;
+    }
+    .slider__control--left {
+      left: 0
+
+    }
+    .slider__control--right {
+      right: 0
+    }
+    .slider__control:hover {
+      color: red;
+      
+    }
+    .slider {
+      padding: 0 50px;
+      position: relative;
+      display: inline-flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="slider" id='slider'>
+      <div class="slider__control-wrap">
+        <button class="btn slider__control slider__control--left"  data-direction='left'>←</button>
+        <button class="btn slider__control slider__control--right" data-direction='right'>→</button>
+      </div>
+      <div class="slider__viewbox">
+        <div class="slider__items-wrap" id='slider-content'>
+          <span class="slider__item">1</span>
+          <span class="slider__item">2</span>
+          <span class="slider__item">3</span>
+          <span class="slider__item">4</span>
+          <span class="slider__item">5</span>
+          <span class="slider__item">6</span>
+          <span class="slider__item">7</span>
+          <span class="slider__item">8</span>
+      </div>
+      </div>
+  </div>
+<script>
+  (function(){
+  const oneSlideWidth = 100; // px
+  const sliderStep = oneSlideWidth; 
+  const viewBoxCount = 3; // How many items are displayed
+
+
+  let slider = document.getElementById('slider');
+  let sliderControls = slider.getElementsByClassName('slider__control');
+  let sliderContent = document.getElementById("slider-content");
+
+  let sliderContentWidth = sliderContent.childElementCount * oneSlideWidth;
+
+  Array.from(sliderControls).forEach(el => {
+    el.addEventListener('click', event => {
+      let direction = event.currentTarget.dataset.direction;
+      let currentMarginLeft = parseInt(sliderContent.style.marginLeft);
+      currentMarginLeft = isNaN(currentMarginLeft) ? 0 : currentMarginLeft;
+      let newMarginLeft;
+      switch (direction){
+        case 'left':
+            newMarginLeft = currentMarginLeft - sliderStep >= viewBoxCount * oneSlideWidth - sliderContentWidth ? currentMarginLeft - sliderStep  : currentMarginLeft
+            break;
+        case 'right':
+          newMarginLeft = currentMarginLeft + sliderStep <= 0 ? currentMarginLeft + sliderStep : currentMarginLeft
+          break;
+      }
+      sliderContent.style.marginLeft = newMarginLeft + 'px'
+    });
+  });
+  })();
+</script>
+</body>
+</html>
