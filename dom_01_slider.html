@@ -106,10 +106,10 @@
       let newMarginLeft;
       switch (direction){
         case 'left':
-            newMarginLeft = currentMarginLeft - sliderStep >= viewBoxCount * oneSlideWidth - sliderContentWidth ? currentMarginLeft - sliderStep  : currentMarginLeft
-            break;
-        case 'right':
           newMarginLeft = currentMarginLeft + sliderStep <= 0 ? currentMarginLeft + sliderStep : currentMarginLeft
+          break;
+        case 'right':
+          newMarginLeft = currentMarginLeft - sliderStep >= viewBoxCount * oneSlideWidth - sliderContentWidth ? currentMarginLeft - sliderStep  : currentMarginLeft
           break;
       }
       sliderContent.style.marginLeft = newMarginLeft + 'px'
