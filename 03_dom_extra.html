@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+  <title>Extra task</title>
+  <style>
+    body {
+      font-family: Montserrat;
+    }
+    .box {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid black;
+      margin-left: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .row {
+      display: flex;
+    }
+    .row + .row {
+      margin-top: 15px;
+    }
+    .row--xcenter {
+      justify-content: center;
+    }
+    .boxex-wrapper {
+      flex-wrap: wrap;
+      /* align-content: ; */
+      margin-left: -15px;
+    }
+   
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="row row--xcenter">
+      <input type="number" name="num" id="user-num" min=0>
+      <input type="color" id='user-color'>
+    </div>
+    <div class="row boxex-wrapper" id='boxex-wrapper'>
+
+    </div>
+  </div>
+  <script>
+    (function(){
+      const defaultBoxClass = 'box';
+      // Selectors
+      const boxesWrapperEl = document.getElementById('boxex-wrapper');
+      const userNumEl = document.getElementById('user-num');
+      const userColorEl = document.getElementById('user-color');
+      let oddFlag = true; // Flag of current state
+ 
+
+      // TODO Create Box Element
+
+      let createBox = num => {
+        let box = document.createElement(tagName="div");
+        box.className=defaultBoxClass;
+        box.textContent = num;
+        return box;
+      };
+
+      // Creating fragment populated with boxes
+      let createBoxesList = num => {
+        let boxList = new DocumentFragment();
+        while (num) {
+          boxList.prepend(createBox(num--));
+        }
+        return boxList;
+      };
+
+      let populateBoxWrapper = (boxList, insertInto) => {
+        ` boxList: DocumentFragment
+          insertInto: Element for inserting
+        `
+        insertInto.append(boxList);  
+      };
+      
+      let resetBoxesBgColor = () => {
+        let boxesList = document.querySelectorAll('.box');
+        Array.from(boxesList).forEach(box => box.style.backgroundColor = "");
+      }
+
+      let getAttrValue = el => el.value;
+
+      let listenNumInput = () => {
+        userNumEl.addEventListener('input', ev => {
+        let userNum = getAttrValue(ev.currentTarget);
+
+        // Create box and populate boxex-wrapper
+        if (userNum) {
+          // Reset
+          boxesWrapperEl.innerHTML = "";
+          let boxesList = createBoxesList(userNum);
+          populateBoxWrapper(boxesList, boxesWrapperEl);
+        }
+      });
+      }
+
+      
+
+      let listenColorInput = () => {
+        userColorEl.oninput = (ev) => {
+          let userColor = getAttrValue(ev.currentTarget);
+          
+          if (userColor) {
+            
+            let hasBoxes = boxesWrapperEl.childElementCount > 0;
+            if (hasBoxes) { // whether boxes exists
+              let selector = oddFlag ? ":nth-of-type(2n+1)" : ":nth-of-type(2n)";
+              oddFlag = !oddFlag;
+              let boxes = document.querySelectorAll(".box"+selector);
+              resetBoxesBgColor();
+              Array.from(boxes).forEach(box => box.style.backgroundColor = userColor);
+            }
+          }
+        }
+      }
+      
+      // Run
+      listenNumInput();
+      listenColorInput();
+      
+    })();
+
+  </script>
+</body>
+</html>
