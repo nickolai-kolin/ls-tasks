@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 0, 0, 0.1);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .overlay--opened {
+        z-index: 10;
+        display: flex;
+      }
+      .modal__content {
+        color: #fff;
+      }
+      .modal {
+        padding: 10px;
+        border-radius: 4px;
+        width: 30%;
+        position: relative;
+      }
+      .modal__action--close {
+        position: absolute;
+        top: -10px;
+        right: 10px;
+      }
+      .modal--grey {
+        background-color: #333;
+      }
+      button {
+        border: 0;
+        background: none;
+        outline: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        font-size: 1rem;
+      }
+      .btn {
+      }
+      .btn--rounded {
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+      }
+      .btn--alert {
+        background-color: red;
+        color: #fff;
+      }
+    </style>
+    <title>Modal</title>
+  </head>
+  <body
+    style="
+      font-family: 'Montserrat', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    "
+  >
+    <div class="wrapper">
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem magnam
+        ratione quasi alias adipisci molestias doloribus, provident eum natus
+        rerum, numquam delectus cum at nobis consectetur deserunt perspiciatis
+        eveniet temporibus
+      </p>
+      <button class="btn btn--action--trigger" data-modal-id="modal-hello">
+        Открыть
+      </button>
+    </div>
+    <div class="overlay" id="overlay">
+      <div class="modal modal--grey" id="modal-hello">
+        <div class="modal__content">Hello, <strong>world!</strong></div>
+        <button class="btn btn--alert btn--rounded modal__action--close">
+          x
+        </button>
+      </div>
+    </div>
+    <script>
+      (function () {
+
+        // TODO Не нравится, что модалка завязана на оверлей при закрытии. 
+
+        let modalClose = document.querySelector(".modal__action--close");
+        let overlay = document.getElementById("overlay");
+        // Клик по овервлей, чтоб закрыть
+        overlay.addEventListener("click", (ev) => {
+          overlay.classList.remove("overlay--opened");
+        });
+        // Клик по крестику, чтоб закрыть оверлей
+        modalClose.onclick = (ev) => {
+          modalClose.closest(".overlay").classList.remove("overlay--opened");
+        };
+        // Клик по кнопке
+        let btnAction = document.querySelector(".btn--action--trigger");
+        btnAction.onclick = (ev) => {
+          let targetModalId = ev.currentTarget.dataset.modalId;
+          let targetModal = document.getElementById(targetModalId);
+          targetModal.closest(".overlay").classList.add("overlay--opened");
+        };
+      })();
+    </script>
+  </body>
+</html>
